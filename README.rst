@@ -53,7 +53,7 @@ Welcome to ``simpletype`` Documentation
 .. image:: https://simpletype.readthedocs.io/en/latest/_static/simpletype-logo.png
     :target: https://simpletype.readthedocs.io/en/latest/
 
-Documentation for ``simpletype``.
+Simple data type system that let many data type system talk to each other. This is very useful to declare a data schema once, and let it talk to pandas, polars, Spark, AWS DynamoDB, AWS Glue, etc ...
 
 
 .. _install:
