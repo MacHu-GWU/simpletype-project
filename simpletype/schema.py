@@ -625,3 +625,42 @@ def json_type_to_simple_type(
         return Struct(fields=schema, **kwargs)
     else:  # pragma: no cover
         raise NotImplementedError
+
+
+def polars_type_to_simple_type(
+    p_type: "pl.DataType",
+) -> DATA_TYPE:  # pragma: no cover
+    if isinstance(p_type, pl.Int32):
+        return Integer()
+    elif isinstance(p_type, pl.Int8):
+        return TinyInteger()
+    elif isinstance(p_type, pl.Int16):
+        return SmallInteger()
+    elif isinstance(p_type, pl.Int64):
+        return BigInteger()
+    elif isinstance(p_type, pl.Float32):
+        return Float()
+    elif isinstance(p_type, pl.Float64):
+        return Double()
+    elif isinstance(p_type, pl.Decimal):
+        return Decimal()
+    elif isinstance(p_type, pl.String):
+        return String()
+    elif isinstance(p_type, pl.Binary):
+        return Binary()
+    elif isinstance(p_type, pl.Boolean):
+        return Bool()
+    elif isinstance(p_type, pl.Null):
+        return Null()
+    elif isinstance(p_type, pl.Datetime):
+        return Datetime()
+    elif isinstance(p_type, pl.List):
+        return List(itype=polars_type_to_simple_type(p_type.inner))
+    elif isinstance(p_type, pl.Struct):
+        fields = {
+            field.name: polars_type_to_simple_type(field.dtype)
+            for field in p_type.fields
+        }
+        return Struct(fields=fields)
+    else:
+        raise NotImplementedError

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import pytest
 import polars as pl
 from simpletype.schema import (
     TypeNameEnum,
@@ -16,10 +17,12 @@ from simpletype.schema import (
     Binary,
     Bool,
     Null,
+    Datetime,
     Set,
     List,
     Struct,
     json_type_to_simple_type,
+    polars_type_to_simple_type,
 )
 
 
@@ -189,6 +192,76 @@ def test_json_type_to_simple_type():
         }
     )
     # fmt: on
+
+
+def test_polars_type_to_simple_type():
+    # Test integer types
+    assert isinstance(polars_type_to_simple_type(pl.Int32()), Integer)
+    assert isinstance(polars_type_to_simple_type(pl.Int8()), TinyInteger)
+    assert isinstance(polars_type_to_simple_type(pl.Int16()), SmallInteger)
+    assert isinstance(polars_type_to_simple_type(pl.Int64()), BigInteger)
+
+    # Test float types
+    assert isinstance(polars_type_to_simple_type(pl.Float32()), Float)
+    assert isinstance(polars_type_to_simple_type(pl.Float64()), Double)
+
+    # Test Decimal
+    assert isinstance(polars_type_to_simple_type(pl.Decimal()), Decimal)
+
+    # Test String
+    assert isinstance(polars_type_to_simple_type(pl.String()), String)
+
+    # Test Binary
+    assert isinstance(polars_type_to_simple_type(pl.Binary()), Binary)
+
+    # Test Boolean
+    assert isinstance(polars_type_to_simple_type(pl.Boolean()), Bool)
+
+    # Test Null
+    assert isinstance(polars_type_to_simple_type(pl.Null()), Null)
+
+    # Test Datetime
+    assert isinstance(polars_type_to_simple_type(pl.Datetime()), Datetime)
+
+    # Test List
+    list_type = polars_type_to_simple_type(pl.List(pl.Int32()))
+    assert isinstance(list_type, List)
+    assert isinstance(list_type.itype, Integer)
+
+    # Test nested List
+    nested_list_type = polars_type_to_simple_type(pl.List(pl.List(pl.String())))
+    assert isinstance(nested_list_type, List)
+    assert isinstance(nested_list_type.itype, List)
+    assert isinstance(nested_list_type.itype.itype, String)
+
+    # Test Struct
+    struct_type = polars_type_to_simple_type(
+        pl.Struct([pl.Field("a", pl.Int32()), pl.Field("b", pl.String())])
+    )
+    assert isinstance(struct_type, Struct)
+    assert isinstance(struct_type.fields["a"], Integer)
+    assert isinstance(struct_type.fields["b"], String)
+
+    # Test nested Struct
+    nested_struct_type = polars_type_to_simple_type(
+        pl.Struct(
+            [
+                pl.Field("x", pl.Int32()),
+                pl.Field("y", pl.Struct([pl.Field("z", pl.String())])),
+            ]
+        )
+    )
+    assert isinstance(nested_struct_type, Struct)
+    assert isinstance(nested_struct_type.fields["x"], Integer)
+    assert isinstance(nested_struct_type.fields["y"], Struct)
+    assert isinstance(nested_struct_type.fields["y"].fields["z"], String)
+
+    # Test unsupported type
+    class UnsupportedType(pl.DataType):
+        pass
+
+    with pytest.raises(NotImplementedError):
+        polars_type_to_simple_type(UnsupportedType)
 
 
 if __name__ == "__main__":

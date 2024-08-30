@@ -10,6 +10,9 @@ def test():
     _ = api.T_SPARK_SCHEMA
     _ = api.TypeAttrEnum
     _ = api.TypeNameEnum
+    _ = api.AwsDynamoDBTypeEnum
+    _ = api.AwsGlueTypeEnum
+    _ = api.SparkTypeEnum
     _ = api.BaseType
     _ = api.DATA_TYPE
     _ = api.Integer
@@ -28,6 +31,7 @@ def test():
     _ = api.List
     _ = api.Struct
     _ = api.json_type_to_simple_type
+    _ = api.polars_type_to_simple_type
 
 
 if __name__ == "__main__":
