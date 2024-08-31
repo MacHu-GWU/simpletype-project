@@ -402,9 +402,10 @@ class Set(BaseType):
     def to_dynamodb_json_polars(self) -> pl.Struct:
         if isinstance(self.itype, String):
             field = AwsDynamoDBTypeEnum.string_set
-        elif isinstance(self.itype, Integer):
-            field = AwsDynamoDBTypeEnum.number_set
-        elif isinstance(self.itype, Float):
+        elif isinstance(
+            self.itype,
+            (Integer, TinyInteger, SmallInteger, BigInteger, Float, Double, Decimal),
+        ):
             field = AwsDynamoDBTypeEnum.number_set
         elif isinstance(self.itype, Binary):
             field = AwsDynamoDBTypeEnum.binary_set

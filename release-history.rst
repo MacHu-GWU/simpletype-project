@@ -17,6 +17,13 @@ x.y.z (Backlog)
 **Miscellaneous**
 
 
+0.2.2 (2024-08-31)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Bugfixes**
+
+- Fix a bug that the ``Set`` type cannot handle ``TinyInt``, ``SmallInt``, ``BigInt`` and ``Double``, ``Decimal`` item types.
+
+
 0.2.1 (2024-08-30)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Features and Improvements**
