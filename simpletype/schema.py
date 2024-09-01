@@ -216,9 +216,11 @@ class Float(BaseType):
 class Double(BaseType):
     """
     :param default_for_null: The default value for null for serialization
+    :param precision: The number of decimal places to round to. If not set, no rounding is done.
     """
 
     default_for_null: T.Any = dataclasses.field(default=NOTHING)
+    precision: int = dataclasses.field(default=NOTHING)
     required: bool = dataclasses.field(default=False)
 
     def to_polars(self) -> pl.Float64:
