@@ -33,6 +33,13 @@ def test():
     _ = api.json_type_to_simple_type
     _ = api.polars_type_to_simple_type
 
+    _ = api.BaseType.from_dict
+    _ = api.BaseType.to_dict
+    _ = api.BaseType.to_polars
+    _ = api.BaseType.to_dynamodb_json_polars
+    _ = api.BaseType.to_glue
+    _ = api.BaseType.to_spark_string
+
 
 if __name__ == "__main__":
     from simpletype.tests import run_cov_test

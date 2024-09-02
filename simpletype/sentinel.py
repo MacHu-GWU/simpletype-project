@@ -63,3 +63,7 @@ def make_sentinel(name="_MISSING", var_name=None):  # pragma: no cover
 
 
 NOTHING = make_sentinel(name="NOTHING")
+
+
+def resolve_kwargs(**kwargs):
+    return {k: v for k, v in kwargs.items() if v is not NOTHING}

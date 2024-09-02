@@ -27,7 +27,10 @@ from simpletype.schema import (
 
 
 def test_integer():
-    integer_type = json_type_to_simple_type({"type": TypeNameEnum.int})
+    dct = {"type": TypeNameEnum.int}
+    integer_type = json_type_to_simple_type(dct)
+    assert integer_type == Integer.from_dict(dct)
+    assert integer_type == Integer.from_dict(integer_type.to_dict())
     assert integer_type.to_polars() == pl.Int32()
     assert integer_type.to_dynamodb_json_polars() == pl.Struct({"N": pl.Utf8()})
     assert integer_type.to_glue() == AwsGlueTypeEnum.bigint
@@ -35,7 +38,10 @@ def test_integer():
 
 
 def test_tiny_integer():
-    tiny_integer_type = json_type_to_simple_type({"type": TypeNameEnum.tinyint})
+    dct = {"type": TypeNameEnum.tinyint}
+    tiny_integer_type = json_type_to_simple_type(dct)
+    assert tiny_integer_type == TinyInteger.from_dict(dct)
+    assert tiny_integer_type == TinyInteger.from_dict(tiny_integer_type.to_dict())
     assert tiny_integer_type.to_polars() == pl.Int8()
     assert tiny_integer_type.to_dynamodb_json_polars() == pl.Struct({"N": pl.Utf8()})
     assert tiny_integer_type.to_glue() == AwsGlueTypeEnum.tinyint
@@ -43,7 +49,10 @@ def test_tiny_integer():
 
 
 def test_small_integer():
-    small_integer_type = json_type_to_simple_type({"type": TypeNameEnum.smallint})
+    dct = {"type": TypeNameEnum.smallint}
+    small_integer_type = json_type_to_simple_type(dct)
+    assert small_integer_type == SmallInteger.from_dict(dct)
+    assert small_integer_type == SmallInteger.from_dict(small_integer_type.to_dict())
     assert small_integer_type.to_polars() == pl.Int16()
     assert small_integer_type.to_dynamodb_json_polars() == pl.Struct({"N": pl.Utf8()})
     assert small_integer_type.to_glue() == AwsGlueTypeEnum.smallint
@@ -51,7 +60,10 @@ def test_small_integer():
 
 
 def test_big_integer():
-    big_integer_type = json_type_to_simple_type({"type": TypeNameEnum.bigint})
+    dct = {"type": TypeNameEnum.bigint}
+    big_integer_type = json_type_to_simple_type(dct)
+    assert big_integer_type == BigInteger.from_dict(dct)
+    assert big_integer_type == BigInteger.from_dict(big_integer_type.to_dict())
     assert big_integer_type.to_polars() == pl.Int64()
     assert big_integer_type.to_dynamodb_json_polars() == pl.Struct({"N": pl.Utf8()})
     assert big_integer_type.to_glue() == AwsGlueTypeEnum.bigint
@@ -59,7 +71,10 @@ def test_big_integer():
 
 
 def test_float():
-    float_type = json_type_to_simple_type({"type": TypeNameEnum.float})
+    dct = {"type": TypeNameEnum.float}
+    float_type = json_type_to_simple_type(dct)
+    assert float_type == Float.from_dict(dct)
+    assert float_type == Float.from_dict(float_type.to_dict())
     assert float_type.to_polars() == pl.Float32()
     assert float_type.to_dynamodb_json_polars() == pl.Struct({"N": pl.Utf8()})
     assert float_type.to_glue() == AwsGlueTypeEnum.float
@@ -67,7 +82,10 @@ def test_float():
 
 
 def test_double():
-    double_type = json_type_to_simple_type({"type": TypeNameEnum.double})
+    dct = {"type": TypeNameEnum.double}
+    double_type = json_type_to_simple_type(dct)
+    assert double_type == Double.from_dict(dct)
+    assert double_type == Double.from_dict(double_type.to_dict())
     assert double_type.to_polars() == pl.Float64()
     assert double_type.to_dynamodb_json_polars() == pl.Struct({"N": pl.Utf8()})
     assert double_type.to_glue() == AwsGlueTypeEnum.double
@@ -75,7 +93,10 @@ def test_double():
 
 
 def test_decimal():
-    decimal_type = json_type_to_simple_type({"type": TypeNameEnum.decimal})
+    dct = {"type": TypeNameEnum.decimal}
+    decimal_type = json_type_to_simple_type(dct)
+    assert decimal_type == Decimal.from_dict(dct)
+    assert decimal_type == Decimal.from_dict(decimal_type.to_dict())
     assert decimal_type.to_polars() == pl.Decimal()
     assert decimal_type.to_dynamodb_json_polars() == pl.Struct({"N": pl.Utf8()})
     assert decimal_type.to_glue() == AwsGlueTypeEnum.decimal
@@ -83,7 +104,10 @@ def test_decimal():
 
 
 def test_string():
-    string_type = json_type_to_simple_type({"type": TypeNameEnum.str})
+    dct = {"type": TypeNameEnum.str}
+    string_type = json_type_to_simple_type(dct)
+    assert string_type == String.from_dict(dct)
+    assert string_type == String.from_dict(string_type.to_dict())
     assert string_type.to_polars() == pl.Utf8()
     assert string_type.to_dynamodb_json_polars() == pl.Struct({"S": pl.Utf8()})
     assert string_type.to_glue() == AwsGlueTypeEnum.string
@@ -92,7 +116,10 @@ def test_string():
 
 
 def test_binary():
-    binary_type = json_type_to_simple_type({"type": TypeNameEnum.bin})
+    dct = {"type": TypeNameEnum.bin}
+    binary_type = json_type_to_simple_type(dct)
+    assert binary_type == Binary.from_dict(dct)
+    assert binary_type == Binary.from_dict(binary_type.to_dict())
     assert binary_type.to_polars() == pl.Binary()
     assert binary_type.to_dynamodb_json_polars() == pl.Struct({"B": pl.Utf8()})
     assert binary_type.to_glue() == AwsGlueTypeEnum.binary
@@ -101,7 +128,10 @@ def test_binary():
 
 
 def test_bool():
-    bool_type = json_type_to_simple_type({"type": TypeNameEnum.bool})
+    dct = {"type": TypeNameEnum.bool}
+    bool_type = json_type_to_simple_type(dct)
+    assert bool_type == Bool.from_dict(dct)
+    assert bool_type == Bool.from_dict(bool_type.to_dict())
     assert bool_type.to_polars() == pl.Boolean()
     assert bool_type.to_dynamodb_json_polars() == pl.Struct({"BOOL": pl.Boolean()})
     assert bool_type.to_glue() == AwsGlueTypeEnum.boolean
@@ -109,7 +139,10 @@ def test_bool():
 
 
 def test_null():
-    null_type = json_type_to_simple_type({"type": TypeNameEnum.null})
+    dct = {"type": TypeNameEnum.null}
+    null_type = json_type_to_simple_type(dct)
+    assert null_type == Null.from_dict(dct)
+    assert null_type == Null.from_dict(null_type.to_dict())
     assert null_type.to_polars() == pl.Null()
     assert null_type.to_dynamodb_json_polars() == pl.Struct({"NULL": pl.Boolean()})
     assert null_type.to_glue() == AwsGlueTypeEnum.string
@@ -118,7 +151,10 @@ def test_null():
 
 
 def test_datetime():
-    datetime_type = json_type_to_simple_type({"type": TypeNameEnum.datetime})
+    dct = {"type": TypeNameEnum.datetime}
+    datetime_type = json_type_to_simple_type(dct)
+    assert datetime_type == Datetime.from_dict(dct)
+    assert datetime_type == Datetime.from_dict(datetime_type.to_dict())
     assert datetime_type.to_polars() == pl.Datetime()
     assert datetime_type.to_dynamodb_json_polars() == pl.Struct({"S": pl.Utf8()})
     assert datetime_type.to_glue() == AwsGlueTypeEnum.timestamp
@@ -141,7 +177,11 @@ def test_json_type_to_simple_type():
     assert json_type_to_simple_type({"type": "null", "default_for_null": None}) == Null(default_for_null=None)
 
     json_type = {"type": "set", "itype": {"type": "int"}}
-    assert json_type_to_simple_type(json_type) == Set(Integer())
+    int_set_type = json_type_to_simple_type(json_type)
+    assert int_set_type == Set(Integer())
+    assert int_set_type == Set.from_dict(json_type)
+    assert int_set_type == Set.from_dict(int_set_type.to_dict())
+
     json_type = {"type": "set", "itype": {"type": "int"}, "default_for_null": [1, 2, 3]}
     assert json_type_to_simple_type(json_type) == Set(Integer(), default_for_null=[1, 2, 3])
 
@@ -155,7 +195,11 @@ def test_json_type_to_simple_type():
     assert json_type_to_simple_type(json_type) == Set(Binary())
 
     json_type = {"type": "list", "itype": {"type": "int"}}
-    assert json_type_to_simple_type(json_type) == List(Integer())
+    int_list_type = json_type_to_simple_type(json_type)
+    assert int_list_type == List(Integer())
+    assert int_list_type == List.from_dict(json_type)
+    assert int_list_type == List.from_dict(int_list_type.to_dict())
+
     json_type = {"type": "list", "itype": {"type": "int"}, "default_for_null": [1, 2, 3]}
     assert json_type_to_simple_type(json_type) == List(Integer(), default_for_null=[1, 2, 3])
 
@@ -172,7 +216,10 @@ def test_json_type_to_simple_type():
         "type": "list",
         "itype": {"type": "struct", "fields": {"a_int": {"type": "int"}}},
     }
-    assert json_type_to_simple_type(json_type) == List(Struct({"a_int": Integer()}))
+    struct_list_type = json_type_to_simple_type(json_type)
+    assert struct_list_type == List(Struct({"a_int": Integer()}))
+    assert struct_list_type == List.from_dict(json_type)
+    assert struct_list_type == List.from_dict(struct_list_type.to_dict())
 
     json_type = {
         "type": "struct",
@@ -183,7 +230,8 @@ def test_json_type_to_simple_type():
             "a_set_of_str": {"type": "set", "itype": {"type": "str"}},
         },
     }
-    assert json_type_to_simple_type(json_type) == Struct(
+    struct_type = json_type_to_simple_type(json_type)
+    assert struct_type == Struct(
         {
             "a_int": Integer(),
             "a_str": String(),
@@ -191,6 +239,8 @@ def test_json_type_to_simple_type():
             "a_set_of_str": Set(String()),
         }
     )
+    assert struct_type == Struct.from_dict(json_type)
+    assert struct_type == Struct.from_dict(struct_type.to_dict())
     # fmt: on
 
 

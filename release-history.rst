@@ -17,6 +17,14 @@ x.y.z (Backlog)
 **Miscellaneous**
 
 
+0.2.5 (2024-09-01)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Minor Improvements**
+
+- Add the missing ``BaseType.to_dict`` method.
+- Improved the ``BaseType.from_dict`` method.
+
+
 0.2.4 (2024-08-31)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Minor Improvements**

@@ -21,7 +21,7 @@ try:
 except ImportError as e:  # pragma: no cover
     has_pyspark = False
 
-from .sentinel import NOTHING
+from .sentinel import NOTHING, resolve_kwargs
 from .constants import (
     TypeNameEnum,
     AwsDynamoDBTypeEnum,
@@ -33,6 +33,7 @@ if T.TYPE_CHECKING:  # pragma: no cover
     from .typehint import T_SIMPLE_SCHEMA
     from .typehint import T_POLARS_SCHEMA
     from .typehint import T_SPARK_SCHEMA
+print(f"ID NOTHING: {id(NOTHING)}")
 
 
 @dataclasses.dataclass
@@ -40,6 +41,13 @@ class BaseType:
     """
     Base class for all data types in simple schema system.
     """
+
+    def to_dict(self) -> dict:
+        raise NotImplementedError
+
+    @classmethod
+    def from_dict(cls, dct: dict) -> "BaseType":
+        return json_type_to_simple_type(json_type=dct)
 
     def to_polars(self) -> T.Union[pl.DataType]:
         """
@@ -109,6 +117,13 @@ class Integer(BaseType):
     default_for_null: T.Any = dataclasses.field(default=NOTHING)
     required: bool = dataclasses.field(default=False)
 
+    def to_dict(self) -> dict:
+        return resolve_kwargs(
+            type=TypeNameEnum.int,
+            default_for_null=self.default_for_null,
+            required=self.required,
+        )
+
     def to_polars(self) -> pl.Int32:
         return pl.Int32()
 
@@ -130,6 +145,13 @@ class TinyInteger(BaseType):
 
     default_for_null: T.Any = dataclasses.field(default=NOTHING)
     required: bool = dataclasses.field(default=False)
+
+    def to_dict(self) -> dict:
+        return resolve_kwargs(
+            type=TypeNameEnum.tinyint,
+            default_for_null=self.default_for_null,
+            required=self.required,
+        )
 
     def to_polars(self) -> pl.Int8:
         return pl.Int8()
@@ -153,6 +175,13 @@ class SmallInteger(BaseType):
     default_for_null: T.Any = dataclasses.field(default=NOTHING)
     required: bool = dataclasses.field(default=False)
 
+    def to_dict(self) -> dict:
+        return resolve_kwargs(
+            type=TypeNameEnum.smallint,
+            default_for_null=self.default_for_null,
+            required=self.required,
+        )
+
     def to_polars(self) -> pl.Int16:
         return pl.Int16()
 
@@ -174,6 +203,13 @@ class BigInteger(BaseType):
 
     default_for_null: T.Any = dataclasses.field(default=NOTHING)
     required: bool = dataclasses.field(default=False)
+
+    def to_dict(self) -> dict:
+        return resolve_kwargs(
+            type=TypeNameEnum.bigint,
+            default_for_null=self.default_for_null,
+            required=self.required,
+        )
 
     def to_polars(self) -> pl.Int64:
         return pl.Int64()
@@ -199,6 +235,14 @@ class Float(BaseType):
     precision: int = dataclasses.field(default=NOTHING)
     required: bool = dataclasses.field(default=False)
 
+    def to_dict(self) -> dict:
+        return resolve_kwargs(
+            type=TypeNameEnum.float,
+            default_for_null=self.default_for_null,
+            precision=self.precision,
+            required=self.required,
+        )
+
     def to_polars(self) -> pl.Float32:
         return pl.Float32()
 
@@ -223,6 +267,14 @@ class Double(BaseType):
     precision: int = dataclasses.field(default=NOTHING)
     required: bool = dataclasses.field(default=False)
 
+    def to_dict(self) -> dict:
+        return resolve_kwargs(
+            type=TypeNameEnum.double,
+            default_for_null=self.default_for_null,
+            precision=self.precision,
+            required=self.required,
+        )
+
     def to_polars(self) -> pl.Float64:
         return pl.Float64()
 
@@ -244,6 +296,13 @@ class Decimal(BaseType):
 
     default_for_null: T.Any = dataclasses.field(default=NOTHING)
     required: bool = dataclasses.field(default=False)
+
+    def to_dict(self) -> dict:
+        return resolve_kwargs(
+            type=TypeNameEnum.decimal,
+            default_for_null=self.default_for_null,
+            required=self.required,
+        )
 
     def to_polars(self) -> pl.Decimal:
         return pl.Decimal()
@@ -271,6 +330,13 @@ class String(BaseType):
     default_for_null: T.Any = dataclasses.field(default=DEFAULT_NULL_STRING)
     required: bool = dataclasses.field(default=False)
 
+    def to_dict(self) -> dict:
+        return resolve_kwargs(
+            type=TypeNameEnum.str,
+            default_for_null=self.default_for_null,
+            required=self.required,
+        )
+
     def to_polars(self) -> pl.Utf8:
         return pl.Utf8()
 
@@ -292,6 +358,13 @@ class Binary(BaseType):
 
     default_for_null: T.Any = dataclasses.field(default=DEFAULT_NULL_BINARY)
     required: bool = dataclasses.field(default=False)
+
+    def to_dict(self) -> dict:
+        return resolve_kwargs(
+            type=TypeNameEnum.bin,
+            default_for_null=self.default_for_null,
+            required=self.required,
+        )
 
     def to_polars(self) -> pl.Binary:
         return pl.Binary()
@@ -315,6 +388,13 @@ class Bool(BaseType):
     default_for_null: T.Any = dataclasses.field(default=NOTHING)
     required: bool = dataclasses.field(default=False)
 
+    def to_dict(self) -> dict:
+        return resolve_kwargs(
+            type=TypeNameEnum.bool,
+            default_for_null=self.default_for_null,
+            required=self.required,
+        )
+
     def to_polars(self) -> pl.Boolean:
         return pl.Boolean()
 
@@ -336,6 +416,13 @@ class Null(BaseType):
 
     default_for_null: T.Any = dataclasses.field(default=None)
     required: bool = dataclasses.field(default=False)
+
+    def to_dict(self) -> dict:
+        return resolve_kwargs(
+            type=TypeNameEnum.null,
+            default_for_null=self.default_for_null,
+            required=self.required,
+        )
 
     def to_polars(self) -> pl.Null:
         return pl.Null()
@@ -364,6 +451,13 @@ class Datetime(BaseType):
 
     default_for_null: T.Any = dataclasses.field(default=NOTHING)
     required: bool = dataclasses.field(default=False)
+
+    def to_dict(self) -> dict:
+        return resolve_kwargs(
+            type=TypeNameEnum.datetime,
+            default_for_null=self.default_for_null,
+            required=self.required,
+        )
 
     def to_polars(self) -> pl.Datetime:
         return pl.Datetime()
@@ -399,6 +493,14 @@ class Set(BaseType):
     def __post_init__(self):
         if self.itype is NOTHING:  # pragma: no cover
             raise ValueError("itype is required for Set")
+
+    def to_dict(self) -> dict:
+        return resolve_kwargs(
+            type=TypeNameEnum.set,
+            itype=self.itype.to_dict(),
+            default_for_null=self.default_for_null,
+            required=self.required,
+        )
 
     def to_polars(self) -> pl.List:
         return pl.List(self.itype.to_polars())
@@ -449,6 +551,14 @@ class List(BaseType):
         if self.itype is NOTHING:  # pragma: no cover
             raise ValueError("itype is required for List")
 
+    def to_dict(self) -> dict:
+        return resolve_kwargs(
+            type=TypeNameEnum.list,
+            itype=self.itype.to_dict(),
+            default_for_null=self.default_for_null,
+            required=self.required,
+        )
+
     def to_polars(self) -> pl.List:
         return pl.List(self.itype.to_polars())
 
@@ -496,6 +606,13 @@ class Struct(BaseType):
     def __post_init__(self):
         if self.fields is NOTHING:  # pragma: no cover
             raise ValueError("types is required for Struct")
+
+    def to_dict(self) -> dict:
+        return resolve_kwargs(
+            type=TypeNameEnum.struct,
+            fields={k: v.to_dict() for k, v in self.fields.items()},
+            required=self.required,
+        )
 
     def to_polars(self) -> pl.Struct:
         return pl.Struct({k: v.to_polars() for k, v in self.fields.items()})
