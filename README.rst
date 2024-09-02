@@ -53,7 +53,42 @@ Welcome to ``simpletype`` Documentation
 .. image:: https://simpletype.readthedocs.io/en/latest/_static/simpletype-logo.png
     :target: https://simpletype.readthedocs.io/en/latest/
 
-Simple data type system that let many data type system talk to each other. This is very useful to declare a data schema once, and let it talk to pandas, polars, Spark, AWS DynamoDB, AWS Glue, etc ...
+Simple data type system that let many data type systems talk to each other.
+
+
+Background
+------------------------------------------------------------------------------
+In the complex world of data processing, defining multiple schemas for a single data structure is a common yet challenging task. Data engineers and analysts often find themselves caught in a web of repetitive schema definitions across various platforms and tools. This is where **simpletype** comes to the rescue.
+
+
+The Problem
+------------------------------------------------------------------------------
+Consider a typical scenario: You're working on a project to export data from Amazon DynamoDB to a Data Lake. For this seemingly straightforward task, you find yourself defining and maintaining multiple schemas:
+
+- JSON Schema
+- Pandas Schema
+- Polars Schema
+- Spark Schema
+- AWS Glue Schema
+- AWS DynamoDB Schema
+
+Each of these schemas serves a crucial purpose in your data pipeline, but the process of creating and maintaining them is:
+
+- Time-consuming
+- Prone to errors
+- Difficult to keep synchronized
+
+
+The Solution
+------------------------------------------------------------------------------
+simpletype is a powerful Python library designed to eliminate the redundancy and potential errors in multi-schema environments. With simpletype, you can:
+
+1. **Define Once, Use Everywhere**: Create a single, unified schema definition.
+2. **Automatic Generation**: Let simpletype automatically generate schemas for all your required data processing systems.
+3. **Consistency Guaranteed**: Ensure all your schemas remain in sync, reducing errors and inconsistencies.
+4. **Save Time and Effort**: Focus on your data and analytics, not on repetitive schema definitions.
+
+simpletype empowers data professionals to streamline their workflow, enhance productivity, and maintain data integrity across diverse data processing ecosystems.
 
 
 .. _install:

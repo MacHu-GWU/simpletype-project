@@ -33,7 +33,6 @@ if T.TYPE_CHECKING:  # pragma: no cover
     from .typehint import T_SIMPLE_SCHEMA
     from .typehint import T_POLARS_SCHEMA
     from .typehint import T_SPARK_SCHEMA
-print(f"ID NOTHING: {id(NOTHING)}")
 
 
 @dataclasses.dataclass
