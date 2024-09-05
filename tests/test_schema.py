@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+from datetime import datetime
 import polars as pl
 from simpletype.schema import (
+    bin_to_b64str,
+    b64str_to_bin,
     TypeNameEnum,
     AwsGlueTypeEnum,
     SparkTypeEnum,
@@ -170,11 +173,17 @@ def test_json_type_to_simple_type():
     assert json_type_to_simple_type({"type": "str"}) == String()
     assert json_type_to_simple_type({"type": "str", "default_for_null": "UNKNOWN"}) == String(default_for_null="UNKNOWN")
     assert json_type_to_simple_type({"type": "bin"}) == Binary()
-    assert json_type_to_simple_type({"type": "bin", "default_for_null": b"hello"}) == Binary(default_for_null=b"hello")
+    b = json_type_to_simple_type({"type": "bin", "default_for_null": bin_to_b64str(b"hello")})
+    assert b.to_dict() == {"type": "bin", "default_for_null": "aGVsbG8=", "required": False}
+    assert b == Binary(default_for_null=b"hello")
     assert json_type_to_simple_type({"type": "bool"}) == Bool()
     assert json_type_to_simple_type({"type": "bool", "default_for_null": False}) == Bool(default_for_null=False)
     assert json_type_to_simple_type({"type": "null"}) == Null()
     assert json_type_to_simple_type({"type": "null", "default_for_null": None}) == Null(default_for_null=None)
+    assert json_type_to_simple_type({"type": "datetime"}) == Datetime()
+    dt = json_type_to_simple_type({"type": "datetime", "default_for_null": datetime(2000, 1, 15, 8, 30, 45)})
+    assert dt.to_dict() == {"type": "datetime", "default_for_null": "2000-01-15T08:30:45", "required": False}
+    assert dt == Datetime(default_for_null=datetime(2000, 1, 15, 8, 30, 45))
 
     json_type = {"type": "set", "itype": {"type": "int"}}
     int_set_type = json_type_to_simple_type(json_type)

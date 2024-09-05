@@ -17,6 +17,16 @@ x.y.z (Backlog)
 **Miscellaneous**
 
 
+0.2.6 (2024-09-05)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Minor Improvements**
+
+- Ensure the result of ``BaseType.to_dict`` is always json serializable.
+- The parameter for ``BaseType.from_dict`` is always json serializable:
+    - For ``Binary`` type, ``default_for_null`` should be base64 encoded string.
+    - For ``Datetime`` type, ``default_for_null`` should be string in ISO format.
+
+
 0.2.5 (2024-09-01)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Minor Improvements**

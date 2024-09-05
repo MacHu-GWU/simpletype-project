@@ -6,6 +6,8 @@ A simple schema definition system.
 
 import typing as T
 import dataclasses
+from datetime import datetime
+from base64 import b64decode, b64encode
 
 try:
     import polars as pl
@@ -33,6 +35,14 @@ if T.TYPE_CHECKING:  # pragma: no cover
     from .typehint import T_SIMPLE_SCHEMA
     from .typehint import T_POLARS_SCHEMA
     from .typehint import T_SPARK_SCHEMA
+
+
+def bin_to_b64str(b: bytes) -> str:
+    return b64encode(b).decode("utf-8")
+
+
+def b64str_to_bin(s: str) -> bytes:
+    return b64decode(s.encode("utf-8"))
 
 
 @dataclasses.dataclass
@@ -359,9 +369,13 @@ class Binary(BaseType):
     required: bool = dataclasses.field(default=False)
 
     def to_dict(self) -> dict:
+        if isinstance(self.default_for_null, bytes):
+            default_for_null = bin_to_b64str(self.default_for_null)
+        else:  # pragma: no cover
+            default_for_null = self.default_for_null
         return resolve_kwargs(
             type=TypeNameEnum.bin,
-            default_for_null=self.default_for_null,
+            default_for_null=default_for_null,
             required=self.required,
         )
 
@@ -452,9 +466,13 @@ class Datetime(BaseType):
     required: bool = dataclasses.field(default=False)
 
     def to_dict(self) -> dict:
+        if isinstance(self.default_for_null, datetime):
+            default_for_null = self.default_for_null.isoformat()
+        else:  # pragma: no cover
+            default_for_null = self.default_for_null
         return resolve_kwargs(
             type=TypeNameEnum.datetime,
-            default_for_null=self.default_for_null,
+            default_for_null=default_for_null,
             required=self.required,
         )
 
@@ -728,12 +746,20 @@ def json_type_to_simple_type(
     elif json_type["type"] == TypeNameEnum.str:
         return String(**kwargs)
     elif json_type["type"] == TypeNameEnum.bin:
+        if "default_for_null" in kwargs:
+            if isinstance(kwargs["default_for_null"], str):
+                kwargs["default_for_null"] = b64str_to_bin(kwargs["default_for_null"])
         return Binary(**kwargs)
     elif json_type["type"] == TypeNameEnum.bool:
         return Bool(**kwargs)
     elif json_type["type"] == TypeNameEnum.null:
         return Null(**kwargs)
     elif json_type["type"] == TypeNameEnum.datetime:
+        if "default_for_null" in kwargs:
+            if isinstance(kwargs["default_for_null"], str):
+                kwargs["default_for_null"] = datetime.fromisoformat(
+                    kwargs["default_for_null"]
+                )
         return Datetime(**kwargs)
     elif json_type["type"] == TypeNameEnum.set:
         return Set(itype=json_type_to_simple_type(json_type["itype"]), **kwargs)
